@@ -35,6 +35,7 @@ interface Recommendation {
   dish: string;
   restaurant: string;
   time: string;
+  deliveryCost: number;
   cost: number;
   rating: number;
   discount: string;
@@ -82,6 +83,7 @@ const ALL_RECS: Recommendation[] = [
     dish: "Grilled Chicken Teriyaki Bowl",
     restaurant: "Tokyo Garden",
     time: "25 min",
+    deliveryCost: 1.99,
     cost: 14.99,
     rating: 4.8,
     discount: "15% off",
@@ -95,6 +97,7 @@ const ALL_RECS: Recommendation[] = [
     dish: "Salmon Pasta al Limone",
     restaurant: "Trattoria Bella",
     time: "30 min",
+    deliveryCost: 2.99,
     cost: 18.5,
     rating: 4.6,
     discount: "10% off",
@@ -108,6 +111,7 @@ const ALL_RECS: Recommendation[] = [
     dish: "Beef Bulgogi Bibimbap",
     restaurant: "Seoul Street",
     time: "20 min",
+    deliveryCost: 0,
     cost: 16.99,
     rating: 4.9,
     discount: "Free delivery",
@@ -121,6 +125,7 @@ const ALL_RECS: Recommendation[] = [
     dish: "Tofu Mapo Noodles",
     restaurant: "Spice Route",
     time: "15 min",
+    deliveryCost: 1.49,
     cost: 12.99,
     rating: 4.5,
     discount: "20% off",
@@ -134,6 +139,7 @@ const ALL_RECS: Recommendation[] = [
     dish: "Egg Fried Rice Supreme",
     restaurant: "Golden Wok",
     time: "10 min",
+    deliveryCost: 0.99,
     cost: 11.5,
     rating: 4.7,
     discount: "$2 off",
@@ -147,6 +153,7 @@ const ALL_RECS: Recommendation[] = [
     dish: "Honey Garlic Salmon Steak",
     restaurant: "Harbor Fresh",
     time: "22 min",
+    deliveryCost: 3.49,
     cost: 22.0,
     rating: 4.8,
     discount: "None",
@@ -160,6 +167,7 @@ const ALL_RECS: Recommendation[] = [
     dish: "Classic Smash Burger",
     restaurant: "The Stack House",
     time: "18 min",
+    deliveryCost: 1.99,
     cost: 15.99,
     rating: 4.4,
     discount: "Free fries",
@@ -173,6 +181,7 @@ const ALL_RECS: Recommendation[] = [
     dish: "Chicken Tikka Masala",
     restaurant: "Bombay Brasserie",
     time: "28 min",
+    deliveryCost: 2.49,
     cost: 17.5,
     rating: 4.7,
     discount: "12% off",
@@ -186,6 +195,7 @@ const ALL_RECS: Recommendation[] = [
     dish: "Classic Pasta Carbonara",
     restaurant: "Nonna Roma",
     time: "20 min",
+    deliveryCost: 2.99,
     cost: 16.0,
     rating: 4.6,
     discount: "Happy hour",
@@ -199,6 +209,7 @@ const ALL_RECS: Recommendation[] = [
     dish: "Veggie Buddha Bowl",
     restaurant: "Green Earth",
     time: "12 min",
+    deliveryCost: 0.99,
     cost: 13.5,
     rating: 4.5,
     discount: "15% off",
@@ -206,6 +217,146 @@ const ALL_RECS: Recommendation[] = [
     description:
       "Baked sesame tofu, brown rice, roasted broccoli, cherry tomatoes, edamame, pickled cabbage, and tahini miso dressing.",
     cuisine: "Healthy",
+  },
+  {
+    id: "r11",
+    dish: "Avocado Eggs Benedict",
+    restaurant: "The Morning Table",
+    time: "18 min",
+    deliveryCost: 1.99,
+    cost: 14.5,
+    rating: 4.7,
+    discount: "Free coffee",
+    ingredients: ["Eggs", "Cheese", "Potato", "Coffee"],
+    description:
+      "Poached eggs on toasted sourdough with whipped ricotta, crispy hash browns, and a side of freshly brewed house coffee. Weekend brunch staple.",
+    cuisine: "Brunch",
+  },
+  {
+    id: "r12",
+    dish: "Smoothie Bowl & Granola",
+    restaurant: "Bloom Kitchen",
+    time: "8 min",
+    deliveryCost: 0.99,
+    cost: 12.0,
+    rating: 4.6,
+    discount: "10% off",
+    ingredients: ["Smoothie", "Banana", "Yogurt", "Nuts"],
+    description:
+      "Thick blended acai and banana base topped with house granola, fresh banana slices, toasted almonds, coconut flakes, and a drizzle of honey.",
+    cuisine: "Healthy",
+  },
+  {
+    id: "r13",
+    dish: "Artisan Cheese Board",
+    restaurant: "The Cork & Board",
+    time: "10 min",
+    deliveryCost: 2.49,
+    cost: 19.0,
+    rating: 4.8,
+    discount: "Wine pairing included",
+    ingredients: ["Cheese", "Crackers", "Nuts", "Wine"],
+    description:
+      "Three seasonal cheeses — aged cheddar, brie, and manchego — with seeded crackers, candied walnuts, fig preserve, and a glass of house red.",
+    cuisine: "European",
+  },
+  {
+    id: "r14",
+    dish: "Chocolate Fondue Platter",
+    restaurant: "Sweet Theory",
+    time: "15 min",
+    deliveryCost: 1.49,
+    cost: 16.5,
+    rating: 4.5,
+    discount: "20% off after 8pm",
+    ingredients: ["Chocolate", "Banana", "Nuts", "Apple"],
+    description:
+      "Rich 70% dark chocolate fondue with skewered banana, apple slices, toasted hazelnuts, and mini marshmallows for dipping.",
+    cuisine: "Dessert",
+  },
+  {
+    id: "r15",
+    dish: "Cold Brew Protein Bowl",
+    restaurant: "Fuel & Form",
+    time: "10 min",
+    deliveryCost: 0.99,
+    cost: 13.0,
+    rating: 4.4,
+    discount: "Loyalty stamp",
+    ingredients: ["Coffee", "Yogurt", "Banana", "Nuts"],
+    description:
+      "Greek yogurt base with cold brew–soaked oats, sliced banana, almond butter swirl, roasted mixed nuts, and a shot of cold brew on the side.",
+    cuisine: "Healthy",
+  },
+  {
+    id: "r16",
+    dish: "Matcha Yogurt Parfait",
+    restaurant: "Bloom Kitchen",
+    time: "6 min",
+    deliveryCost: 0.99,
+    cost: 10.5,
+    rating: 4.5,
+    discount: "None",
+    ingredients: ["Tea", "Yogurt", "Apple", "Nuts"],
+    description:
+      "Layers of ceremonial matcha-infused yogurt, caramelised apple compote, candied pecans, and house granola. Light, bright, and energising.",
+    cuisine: "Healthy",
+  },
+  {
+    id: "r17",
+    dish: "Loaded Potato Skins",
+    restaurant: "The Stack House",
+    time: "20 min",
+    deliveryCost: 1.99,
+    cost: 11.0,
+    rating: 4.3,
+    discount: "$3 off",
+    ingredients: ["Potato", "Cheese", "Onion", "Yogurt"],
+    description:
+      "Crispy twice-baked potato skins loaded with aged cheddar, caramelised onion, sour cream, and smoked paprika. A comfort classic.",
+    cuisine: "American",
+  },
+  {
+    id: "r18",
+    dish: "Boba French Toast",
+    restaurant: "Late Morn",
+    time: "22 min",
+    deliveryCost: 2.49,
+    cost: 15.0,
+    rating: 4.6,
+    discount: "Brunch special",
+    ingredients: ["Eggs", "Banana", "Boba", "Chocolate"],
+    description:
+      "Thick-cut brioche French toast, banana foster topping, crushed boba pearls, and a drizzle of dark chocolate ganache. A dessert for breakfast.",
+    cuisine: "Fusion",
+  },
+  {
+    id: "r19",
+    dish: "Sparkling Juice & Mezze",
+    restaurant: "The Vine Table",
+    time: "12 min",
+    deliveryCost: 1.99,
+    cost: 17.0,
+    rating: 4.5,
+    discount: "None",
+    ingredients: ["Juice", "Cheese", "Crackers", "Tomato"],
+    description:
+      "Chilled sparkling apple and elderflower juice paired with whipped feta, heirloom tomatoes, seeded crackers, and marinated olives.",
+    cuisine: "Mediterranean",
+  },
+  {
+    id: "r20",
+    dish: "Popcorn Chicken Bento",
+    restaurant: "Bento Box Co.",
+    time: "16 min",
+    deliveryCost: 1.49,
+    cost: 14.0,
+    rating: 4.6,
+    discount: "Free drink",
+    ingredients: ["Chicken", "Popcorn", "Rice", "Soda"],
+    description:
+      "Crispy popcorn chicken bites, steamed jasmine rice, pickled radish, edamame, and a cold soda. A proper lunchbox in a box.",
+    cuisine: "Japanese-Fusion",
   },
 ];
 
@@ -221,17 +372,34 @@ const FRIENDS = [
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function pickRecs(selected: Ingredient[]): Recommendation[] {
+  if (selected.length === 0) {
+    // Nothing selected — return top-rated recs
+    return [...ALL_RECS].sort((a, b) => b.rating - a.rating).slice(0, 6);
+  }
+
   const names = new Set(selected.map((i) => i.name));
+
   const scored = ALL_RECS.map((rec) => ({
     rec,
+    // Count how many of this rec's ingredients the user actually selected
     score: rec.ingredients.filter((n) => names.has(n)).length,
-  })).sort((a, b) => b.score - a.score || b.rec.rating - a.rec.rating);
+  }));
 
-  const result = scored.slice(0, 10).map((s) => s.rec);
-  // ensure exactly 6
-  return result.slice(0, 6).length === 6
-    ? result.slice(0, 6)
-    : ALL_RECS.slice(0, 6);
+  // Recs with at least one match, sorted by overlap then rating
+  const matched = scored
+    .filter((s) => s.score > 0)
+    .sort((a, b) => b.score - a.score || b.rec.rating - a.rec.rating)
+    .map((s) => s.rec);
+
+  // Recs with no overlap at all, sorted by rating as fallback padding
+  const unmatched = scored
+    .filter((s) => s.score === 0)
+    .sort((a, b) => b.rec.rating - a.rec.rating)
+    .map((s) => s.rec);
+
+  // Fill to exactly 6: matched first, then pad with highest-rated unmatched
+  const combined = [...matched, ...unmatched];
+  return combined.slice(0, 6);
 }
 
 // ─── TiltCard ────────────────────────────────────────────────────────────────
@@ -289,12 +457,12 @@ function LandingPage({
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary/8 blur-3xl" />
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-accent/6 blur-3xl" />
-        <span className="absolute top-12 right-16 text-7xl opacity-[0.07]">🍜</span>
-        <span className="absolute bottom-16 left-12 text-7xl opacity-[0.07]">🥗</span>
-        <span className="absolute top-1/3 left-8 text-5xl opacity-[0.05]">🍕</span>
-        <span className="absolute bottom-1/3 right-8 text-5xl opacity-[0.05]">🍣</span>
+        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-primary/8 blur-3xl" />
+        <span className="absolute top-12 right-16 text-7xl opacity-[0.12]">🍜</span>
+        <span className="absolute bottom-16 left-12 text-7xl opacity-[0.12]">🥗</span>
+        <span className="absolute top-1/3 left-8 text-5xl opacity-[0.08]">🍕</span>
+        <span className="absolute bottom-1/3 right-8 text-5xl opacity-[0.08]">🍣</span>
       </div>
 
       <motion.div
@@ -413,11 +581,13 @@ function FriendsPage({ onBack }: { onBack: () => void }) {
 
 function KitchenSection({
   onConfirm,
+  initialPlate = [],
 }: {
   onConfirm: (ingredients: Ingredient[]) => void;
+  initialPlate?: Ingredient[];
 }) {
   const [activeKitchen, setActiveKitchen] = useState<KitchenTab>("main");
-  const [plate, setPlate] = useState<Ingredient[]>([]);
+  const [plate, setPlate] = useState<Ingredient[]>(initialPlate);
   const [dragOver, setDragOver] = useState<"plate" | "trash" | null>(null);
   const [dragging, setDragging] = useState<string | null>(null);
 
@@ -525,7 +695,7 @@ function KitchenSection({
                     onClick={() => addToPlate(ingredient)}
                     className={`flex flex-col items-center gap-1.5 p-3 rounded-2xl border select-none transition-all ${
                       onPlate
-                        ? "border-primary/40 bg-primary/8 opacity-50 cursor-default"
+                        ? "border-primary/40 bg-primary/10 opacity-50 cursor-default"
                         : "border-border bg-secondary hover:border-primary/40 hover:bg-primary/5 cursor-grab active:cursor-grabbing"
                     }`}
                   >
@@ -660,7 +830,7 @@ function RecCard({
     <TiltCard className="flex flex-col bg-card border border-border rounded-3xl overflow-hidden h-full">
       <div
         className={`h-1 w-full ${
-          label === "A" ? "bg-primary" : "bg-accent"
+          label === "A" ? "bg-primary" : "bg-foreground"
         }`}
       />
       <div className="p-6 flex flex-col gap-4 flex-1">
@@ -668,7 +838,7 @@ function RecCard({
           className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-extrabold ${
             label === "A"
               ? "bg-primary text-primary-foreground"
-              : "bg-accent text-accent-foreground"
+              : "bg-foreground text-background"
           }`}
         >
           {label}
@@ -697,6 +867,10 @@ function RecCard({
           <div className="flex items-center gap-2 bg-secondary rounded-xl px-3 py-2">
             <Clock size={13} className="text-muted-foreground shrink-0" />
             <span className="text-sm font-medium">{rec.time}</span>
+            <span className="text-muted-foreground text-xs">·</span>
+            <span className="text-sm font-medium">
+              {rec.deliveryCost === 0 ? "Free" : `$${rec.deliveryCost.toFixed(2)}`}
+            </span>
           </div>
           <div className="flex items-center gap-2 bg-secondary rounded-xl px-3 py-2">
             <span className="text-sm font-bold">${rec.cost.toFixed(2)}</span>
@@ -757,7 +931,7 @@ function RecCard({
           className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all ${
             label === "A"
               ? "bg-primary text-primary-foreground hover:opacity-90 shadow-lg shadow-primary/20"
-              : "bg-accent text-accent-foreground hover:opacity-90 shadow-lg shadow-amber-500/20"
+              : "bg-foreground text-background hover:opacity-90 shadow-lg shadow-foreground/15"
           }`}
         >
           Choose This One
@@ -966,7 +1140,11 @@ function ResultPage({
               </div>
               <div className="text-center p-3 bg-secondary rounded-2xl">
                 <p className="font-bold text-lg">{winner.time}</p>
-                <p className="text-[11px] text-muted-foreground">Delivery</p>
+                <p className="text-[11px] text-muted-foreground">
+                  {winner.deliveryCost === 0
+                    ? "Free delivery"
+                    : `+$${winner.deliveryCost.toFixed(2)} delivery`}
+                </p>
               </div>
               <div className="text-center p-3 bg-secondary rounded-2xl">
                 <p className="font-bold text-lg">${winner.cost.toFixed(2)}</p>
@@ -1058,8 +1236,11 @@ export default function App() {
   const [recs, setRecs] = useState<Recommendation[]>([]);
   const [winners, setWinners] = useState<Recommendation[]>([]);
   const [finalWinner, setFinalWinner] = useState<Recommendation | null>(null);
+  // Persist plate across kitchen visits
+  const [savedPlate, setSavedPlate] = useState<Ingredient[]>([]);
 
   const handleKitchenConfirm = (ingredients: Ingredient[]) => {
+    setSavedPlate(ingredients);
     setRecs(pickRecs(ingredients));
     setWinners([]);
     setView("tournament");
@@ -1094,10 +1275,14 @@ export default function App() {
         <FriendsPage onBack={() => setView("landing")} />
       )}
       {view === "kitchen" && (
-        <KitchenSection onConfirm={handleKitchenConfirm} />
+        <KitchenSection
+          onConfirm={handleKitchenConfirm}
+          initialPlate={savedPlate}
+        />
       )}
       {view === "tournament" && recs.length >= 6 && (
         <TournamentSection
+          key={recs.map((r) => r.id).join(",")}
           recs={recs}
           winners={winners}
           onChoose={handleChoose}
