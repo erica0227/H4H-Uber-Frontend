@@ -591,7 +591,28 @@ function KitchenSection({
   const [dragOver, setDragOver] = useState<"plate" | "trash" | null>(null);
   const [dragging, setDragging] = useState<string | null>(null);
 
-  const panelItems = INGREDIENTS.filter((i) => i.kitchen === activeKitchen);
+  // Extra display ingredients for the bowl-builder shelves.
+  // These still behave like normal ingredients when selected.
+  const EXTRA_BOWL_OPTIONS: Ingredient[] = [
+    { id: "shrimp", name: "Shrimp", emoji: "🍤", kitchen: "main" },
+    { id: "chili-oil", name: "Chili Oil", emoji: "🌶️", kitchen: "main" },
+    { id: "sesame-sauce", name: "Sesame", emoji: "🥣", kitchen: "main" },
+    { id: "soy-glaze", name: "Soy Glaze", emoji: "🍶", kitchen: "main" },
+    { id: "miso-sauce", name: "Miso", emoji: "🍲", kitchen: "main" },
+    { id: "greens", name: "Greens", emoji: "🥬", kitchen: "main" },
+    { id: "corn", name: "Corn", emoji: "🌽", kitchen: "main" },
+    { id: "carrots", name: "Carrots", emoji: "🥕", kitchen: "main" },
+    { id: "mushrooms", name: "Mushrooms", emoji: "🍄", kitchen: "main" },
+    { id: "cabbage", name: "Cabbage", emoji: "🥗", kitchen: "main" },
+    { id: "edamame", name: "Edamame", emoji: "🫛", kitchen: "main" },
+    { id: "broth", name: "Broth", emoji: "🍜", kitchen: "main" },
+  ];
+
+  const allOptions = [...INGREDIENTS, ...EXTRA_BOWL_OPTIONS];
+  const byId = (ids: string[]) =>
+    ids
+      .map((id) => allOptions.find((ingredient) => ingredient.id === id))
+      .filter((ingredient): ingredient is Ingredient => Boolean(ingredient));
 
   const addToPlate = (ingredient: Ingredient) => {
     if (!plate.find((p) => p.id === ingredient.id)) {
@@ -620,7 +641,7 @@ function KitchenSection({
     const id = e.dataTransfer.getData("id");
     const source = e.dataTransfer.getData("source");
     if (source === "panel") {
-      const ing = INGREDIENTS.find((i) => i.id === id);
+      const ing = allOptions.find((i) => i.id === id);
       if (ing) addToPlate(ing);
     }
   };
@@ -634,181 +655,314 @@ function KitchenSection({
   };
 
   const TABS: { id: KitchenTab; label: string; icon: React.ReactNode }[] = [
-    { id: "main", label: "Main Kitchen", icon: <ChefHat size={15} /> },
-    { id: "snack", label: "Snack Kitchen", icon: <Cookie size={15} /> },
-    { id: "drink", label: "Drink Kitchen", icon: <Coffee size={15} /> },
+    { id: "main", label: "Change kitchen", icon: <ChefHat size={20} /> },
+    { id: "drink", label: "Drink", icon: <Coffee size={20} /> },
+    { id: "snack", label: "Snack", icon: <Cookie size={20} /> },
   ];
 
+  const shelvesByKitchen: Record<
+    KitchenTab,
+    { title: string; subtitle: string; icon: string; items: Ingredient[] }[]
+  > = {
+    main: [
+      {
+        title: "Protein",
+        subtitle: "Pick one or more.",
+        icon: "🥢",
+        items: byId(["chicken", "tofu", "shrimp", "beef", "salmon"]),
+      },
+      {
+        title: "Vegetables",
+        subtitle: "Add as many as you like.",
+        icon: "🌿",
+        items: byId(["greens", "mushrooms", "cabbage", "edamame", "corn", "carrots"]),
+      },
+      {
+        title: "Spice & Sauce",
+        subtitle: "Add some heat and flavor.",
+        icon: "🌶️",
+        items: byId(["chili-oil", "sesame-sauce", "soy-glaze", "miso-sauce", "garlic"]),
+      },
+      {
+        title: "Base",
+        subtitle: "Choose liquid or dry.",
+        icon: "🥣",
+        items: byId(["broth", "rice", "pasta", "greens"]),
+      },
+    ],
+    drink: [
+      {
+        title: "Drink Kitchen",
+        subtitle: "Pick a drink for the side.",
+        icon: "🥤",
+        items: byId(["coffee", "tea", "juice", "smoothie", "soda", "water", "boba"]),
+      },
+    ],
+    snack: [
+      {
+        title: "Snack Kitchen",
+        subtitle: "Add something small on the side.",
+        icon: "🍪",
+        items: byId(["nuts", "cheese", "crackers", "apple", "banana", "yogurt", "popcorn", "chocolate"]),
+      },
+    ],
+  };
+
+  const shelves = shelvesByKitchen[activeKitchen];
+  const topShelf = shelves[0];
+  const lowerShelves = shelves.slice(1);
+
+  function IngredientTile({ ingredient }: { ingredient: Ingredient }) {
+    const onPlate = !!plate.find((p) => p.id === ingredient.id);
+
+    return (
+      <div
+        role="button"
+        tabIndex={0}
+        draggable={!onPlate}
+        onDragStart={(e) => !onPlate && onDragStart(e, ingredient.id, "panel")}
+        onDragEnd={onDragEnd}
+        onClick={() => addToPlate(ingredient)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") addToPlate(ingredient);
+        }}
+        className={`relative min-w-[104px] sm:min-w-[122px] h-[118px] rounded-2xl border bg-white px-3 py-3 shadow-[0_8px_20px_rgba(0,0,0,0.07)] transition-all select-none ${
+          onPlate
+            ? "border-primary/40 bg-primary/5 opacity-60 cursor-default"
+            : "border-black/10 hover:border-primary/40 hover:-translate-y-0.5 cursor-grab active:cursor-grabbing"
+        }`}
+      >
+        {onPlate && (
+          <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-primary" />
+        )}
+        <span className="block text-4xl leading-none mb-3">{ingredient.emoji}</span>
+        <span className="block text-sm font-semibold text-foreground leading-tight">
+          {ingredient.name}
+        </span>
+      </div>
+    );
+  }
+
+  function ShelfSection({
+    title,
+    subtitle,
+    icon,
+    items,
+  }: {
+    title: string;
+    subtitle: string;
+    icon: string;
+    items: Ingredient[];
+  }) {
+    return (
+      <section className="rounded-[28px] bg-white/90 border border-black/5 shadow-[0_12px_34px_rgba(0,0,0,0.05)] px-4 py-4 overflow-hidden">
+        <div className="flex items-start justify-between gap-3 mb-1">
+          <div className="flex items-start gap-3">
+            <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center text-xl shrink-0">
+              {icon}
+            </div>
+            <div>
+              <h3
+                className="text-xl font-bold leading-tight"
+                style={{ fontFamily: "var(--font-family-display)" }}
+              >
+                {title}
+              </h3>
+              <p className="text-sm text-muted-foreground">{subtitle}</p>
+            </div>
+          </div>
+          <button className="px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold shrink-0">
+            View all
+          </button>
+        </div>
+
+        <div className="relative mt-4">
+          {/* clean transparent shelf base */}
+          <div className="absolute inset-x-0 bottom-0 h-9 rounded-2xl bg-[#8B5E34]/10 border border-[#8B5E34]/15 shadow-[0_12px_26px_rgba(92,64,31,0.10)] backdrop-blur-sm" />
+          <div className="relative z-10 flex gap-3 overflow-x-auto px-1 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {items.map((ingredient) => (
+              <IngredientTile key={ingredient.id} ingredient={ingredient} />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col p-6 max-w-5xl mx-auto">
+    <div className="min-h-screen bg-[#FBFAF7] text-foreground px-4 py-5">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="flex flex-col flex-1"
+        className="mx-auto max-w-md pb-28"
       >
-        <div className="flex items-center gap-3 mb-6">
-          <Utensils size={20} className="text-primary" />
-          <h2
-            className="text-2xl font-bold"
-            style={{ fontFamily: "var(--font-family-display)" }}
-          >
-            Build Your Plate
-          </h2>
+        {/* Header */}
+        <div className="flex items-start justify-between gap-4 mb-6">
+          <div>
+            <h2
+              className="text-4xl font-extrabold tracking-tight leading-none"
+              style={{ fontFamily: "var(--font-family-display)" }}
+            >
+              Build your bowl
+            </h2>
+            <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+              Customize fresh ingredients just the way you like.
+            </p>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-black/10 text-primary font-semibold shadow-sm">
+              <span>♡</span>
+              Save bowl
+            </button>
+            <button className="w-12 h-12 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center shadow-lg shadow-primary/20">
+              <ChefHat size={22} />
+            </button>
+          </div>
         </div>
 
-        {/* Kitchen tabs */}
-        <div className="flex gap-2 mb-6 flex-wrap">
-          {TABS.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveKitchen(tab.id)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
-                activeKitchen === tab.id
-                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                  : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-primary/30"
-              }`}
-            >
-              {tab.icon}
-              {tab.label}
-            </button>
+        {/* First shelf */}
+        <ShelfSection {...topShelf} />
+
+        {/* Center bowl */}
+        <div
+          className={`relative my-6 rounded-[34px] border-2 border-dashed px-4 py-8 transition-all ${
+            dragOver === "plate"
+              ? "border-primary bg-primary/6 scale-[1.01]"
+              : "border-transparent bg-white/45"
+          }`}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragOver("plate");
+          }}
+          onDragLeave={() => setDragOver(null)}
+          onDrop={onPlateDrop}
+        >
+          <div className="absolute left-10 top-1/2 text-primary/25 text-4xl select-none">‹</div>
+          <div className="absolute right-10 top-1/2 text-primary/25 text-4xl select-none">›</div>
+
+          <div className="relative mx-auto h-44 w-full max-w-[310px]">
+            <div className="absolute left-1/2 top-28 h-10 w-64 -translate-x-1/2 rounded-full bg-black/7 blur-sm" />
+            <div className="absolute left-1/2 top-3 z-20 h-28 w-72 -translate-x-1/2 rounded-[999px] border-[3px] border-primary bg-[#FFF2DE] shadow-[0_16px_32px_rgba(0,0,0,0.08)]" />
+            <div className="absolute left-1/2 top-[68px] z-10 h-24 w-60 -translate-x-1/2 rounded-b-[90px] border-x-[3px] border-b-[3px] border-primary bg-[#FFF8ED]" />
+            <div className="absolute left-1/2 top-[116px] z-30 -translate-x-1/2 text-3xl text-primary">
+              ♥
+            </div>
+
+            {plate.length > 0 && (
+              <div className="absolute left-1/2 top-8 z-30 flex max-w-[230px] -translate-x-1/2 flex-wrap items-center justify-center gap-1.5">
+                {plate.slice(0, 8).map((ing) => (
+                  <span
+                    key={ing.id}
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-xl shadow-sm border border-black/5"
+                  >
+                    {ing.emoji}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="text-center -mt-2">
+            <p className="text-primary font-bold text-sm">
+              {plate.length === 0
+                ? "Start building ↗"
+                : `${plate.length} ingredient${plate.length > 1 ? "s" : ""} selected`}
+            </p>
+          </div>
+
+          {plate.length > 0 && (
+            <div className="mt-4 flex flex-wrap justify-center gap-2">
+              {plate.map((ing) => (
+                <div
+                  key={ing.id}
+                  draggable
+                  onDragStart={(e) => onDragStart(e, ing.id, "plate")}
+                  onDragEnd={onDragEnd}
+                  className={`flex items-center gap-1.5 rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs font-semibold shadow-sm cursor-grab active:cursor-grabbing ${
+                    dragging === ing.id ? "opacity-40" : "opacity-100"
+                  }`}
+                >
+                  <span>{ing.emoji}</span>
+                  <span>{ing.name}</span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFromPlate(ing.id);
+                    }}
+                    className="ml-1 rounded-full p-0.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div
+            className={`mx-auto mt-4 flex max-w-xs items-center justify-center gap-2 rounded-2xl border border-dashed px-4 py-2.5 text-xs font-semibold transition-all ${
+              dragOver === "trash"
+                ? "border-destructive bg-destructive/10 text-destructive"
+                : "border-black/10 bg-white/70 text-muted-foreground"
+            }`}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragOver("trash");
+            }}
+            onDragLeave={() => setDragOver(null)}
+            onDrop={onTrashDrop}
+          >
+            <Trash2 size={14} />
+            Drag selected items here to remove
+          </div>
+        </div>
+
+        {/* Lower shelves */}
+        <div className="space-y-4">
+          {lowerShelves.map((section) => (
+            <ShelfSection key={section.title} {...section} />
           ))}
         </div>
 
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Ingredient panel */}
-          <div className="bg-card border border-border rounded-3xl p-5">
-            <p className="text-xs text-muted-foreground font-semibold uppercase tracking-widest mb-4">
-              Drag or click to add
-            </p>
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-              {panelItems.map((ingredient) => {
-                const onPlate = !!plate.find((p) => p.id === ingredient.id);
-                return (
-                  <div
-                    key={ingredient.id}
-                    draggable={!onPlate}
-                    onDragStart={(e) =>
-                      !onPlate && onDragStart(e, ingredient.id, "panel")
-                    }
-                    onDragEnd={onDragEnd}
-                    onClick={() => addToPlate(ingredient)}
-                    className={`flex flex-col items-center gap-1.5 p-3 rounded-2xl border select-none transition-all ${
-                      onPlate
-                        ? "border-primary/40 bg-primary/10 opacity-50 cursor-default"
-                        : "border-border bg-secondary hover:border-primary/40 hover:bg-primary/5 cursor-grab active:cursor-grabbing"
-                    }`}
-                  >
-                    <span className="text-2xl">{ingredient.emoji}</span>
-                    <span className="text-xs font-medium text-center leading-tight">
-                      {ingredient.name}
-                    </span>
-                    {onPlate && (
-                      <span className="text-[10px] text-primary font-bold">
-                        Added
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Plate + trash + confirm */}
-          <div className="flex flex-col gap-4">
-            {/* Plate drop zone */}
-            <div
-              className={`flex-1 min-h-52 bg-card border-2 border-dashed rounded-3xl p-5 transition-all duration-200 ${
-                dragOver === "plate"
-                  ? "border-primary bg-primary/6 scale-[1.01]"
-                  : "border-border"
-              }`}
-              onDragOver={(e) => {
-                e.preventDefault();
-                setDragOver("plate");
-              }}
-              onDragLeave={() => setDragOver(null)}
-              onDrop={onPlateDrop}
+        {/* Kitchen / snack / drink switcher */}
+        <div className="mt-4 rounded-[26px] border border-black/5 bg-white/90 shadow-[0_10px_26px_rgba(0,0,0,0.05)] overflow-hidden grid grid-cols-3">
+          {TABS.map((tab, index) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveKitchen(tab.id)}
+              className={`flex items-center justify-center gap-2 px-2 py-4 text-xs sm:text-sm font-semibold transition-all ${
+                activeKitchen === tab.id
+                  ? "bg-primary/10 text-primary"
+                  : "text-foreground hover:bg-secondary"
+              } ${index > 0 ? "border-l border-black/5" : ""}`}
             >
-              <p className="text-xs text-muted-foreground font-semibold uppercase tracking-widest mb-3">
-                Your Plate
-                {plate.length > 0 && (
-                  <span className="ml-2 text-primary">{plate.length} items</span>
-                )}
-              </p>
-              {plate.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-36 text-muted-foreground gap-2">
-                  <span className="text-5xl select-none">🍽️</span>
-                  <span className="text-sm">Drop ingredients here</span>
-                </div>
-              ) : (
-                <div className="flex flex-wrap gap-2">
-                  {plate.map((ing) => (
-                    <div
-                      key={ing.id}
-                      draggable
-                      onDragStart={(e) => onDragStart(e, ing.id, "plate")}
-                      onDragEnd={onDragEnd}
-                      className={`flex items-center gap-2 pl-2.5 pr-1.5 py-1.5 bg-secondary rounded-xl border border-border cursor-grab active:cursor-grabbing select-none transition-opacity ${
-                        dragging === ing.id ? "opacity-40" : "opacity-100"
-                      }`}
-                    >
-                      <span className="text-lg">{ing.emoji}</span>
-                      <span className="text-sm font-medium">{ing.name}</span>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          removeFromPlate(ing.id);
-                        }}
-                        className="p-0.5 rounded-lg hover:bg-destructive/20 text-muted-foreground hover:text-destructive transition-colors"
-                      >
-                        <X size={12} />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Trash */}
-            <div
-              className={`flex items-center gap-3 p-3.5 rounded-2xl border-2 border-dashed transition-all duration-200 ${
-                dragOver === "trash"
-                  ? "border-destructive bg-destructive/10 text-destructive scale-[1.02]"
-                  : "border-border text-muted-foreground"
-              }`}
-              onDragOver={(e) => {
-                e.preventDefault();
-                setDragOver("trash");
-              }}
-              onDragLeave={() => setDragOver(null)}
-              onDrop={onTrashDrop}
-            >
-              <Trash2 size={18} />
-              <span className="text-sm font-medium">
-                Drag from plate to remove
-              </span>
-            </div>
-
-            {/* Confirm */}
-            <motion.button
-              whileHover={{ scale: plate.length > 0 ? 1.02 : 1 }}
-              whileTap={{ scale: plate.length > 0 ? 0.97 : 1 }}
-              onClick={() => plate.length > 0 && onConfirm(plate)}
-              disabled={plate.length === 0}
-              className={`w-full py-4 rounded-2xl text-base font-bold transition-all ${
-                plate.length > 0
-                  ? "bg-primary text-primary-foreground shadow-xl shadow-primary/25 hover:opacity-90"
-                  : "bg-muted text-muted-foreground cursor-not-allowed"
-              }`}
-            >
-              {plate.length > 0
-                ? `Find My Meal · ${plate.length} ingredient${plate.length > 1 ? "s" : ""} →`
-                : "Add ingredients to continue"}
-            </motion.button>
-          </div>
+              {tab.icon}
+              <span className="truncate">{tab.label}</span>
+            </button>
+          ))}
         </div>
       </motion.div>
+
+      {/* Sticky CTA */}
+      <div className="fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-[#FBFAF7] via-[#FBFAF7] to-transparent px-4 pb-4 pt-8">
+        <div className="mx-auto max-w-md">
+          <motion.button
+            whileHover={{ scale: plate.length > 0 ? 1.01 : 1 }}
+            whileTap={{ scale: plate.length > 0 ? 0.97 : 1 }}
+            onClick={() => plate.length > 0 && onConfirm(plate)}
+            disabled={plate.length === 0}
+            className={`w-full rounded-2xl py-4 text-lg font-extrabold transition-all ${
+              plate.length > 0
+                ? "bg-primary text-primary-foreground shadow-xl shadow-primary/25 hover:opacity-90"
+                : "bg-muted text-muted-foreground cursor-not-allowed"
+            }`}
+          >
+            {plate.length > 0
+              ? `Find my meal · ${plate.length} selected →`
+              : "Add ingredients →"}
+          </motion.button>
+        </div>
+      </div>
     </div>
   );
 }
