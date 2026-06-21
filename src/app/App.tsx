@@ -88,6 +88,11 @@ const INGREDIENTS: Ingredient[] = [
   { id: "garlic", name: "Garlic", emoji: "🧄", kitchen: "main" },
   { id: "onion", name: "Onion", emoji: "🧅", kitchen: "main" },
   { id: "potato", name: "Potato", emoji: "🥔", kitchen: "main" },
+  { id: "pork", name: "Pork", emoji: "🥩", kitchen: "main" },
+  { id: "noodles", name: "Noodles", emoji: "🍜", kitchen: "main" },
+  { id: "greens", name: "Greens", emoji: "🥬", kitchen: "main" },
+  { id: "bokchoi", name: "Bok Choi", emoji: "🥬", kitchen: "main" },
+  { id: "salad", name: "Salad", emoji: "🥗", kitchen: "main" },
   { id: "nuts", name: "Nuts", emoji: "🥜", kitchen: "snack" },
   { id: "cheese", name: "Cheese", emoji: "🧀", kitchen: "snack" },
   { id: "crackers", name: "Crackers", emoji: "🍘", kitchen: "snack" },
@@ -662,9 +667,9 @@ const KITCHEN_CATEGORIES: Record<
   { label: string; desc: string; ids: string[] }[]
 > = {
   main: [
-    { label: "Protein", desc: "Pick one or more", ids: ["chicken", "beef", "salmon", "tofu", "eggs"] },
-    { label: "Vegetables", desc: "Add as many as you like", ids: ["broccoli", "tomato", "garlic", "onion"] },
-    { label: "Carbs", desc: "Add some substance", ids: ["rice", "pasta", "potato"] },
+    { label: "Protein", desc: "Pick one or more", ids: ["chicken", "beef", "pork", "salmon", "tofu", "eggs"] },
+    { label: "Vegetables", desc: "Add as many as you like", ids: ["broccoli", "tomato", "garlic", "onion", "greens", "bokchoi", "salad"] },
+    { label: "Carbs & Noodles", desc: "Add some substance", ids: ["rice", "pasta", "noodles", "potato"] },
   ],
   snack: [
     { label: "Crunchy", desc: "Pick one or more", ids: ["nuts", "crackers", "popcorn"] },

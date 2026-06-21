@@ -846,12 +846,190 @@ function BobaArt() {
 
 // ─── Export Map ───────────────────────────────────────────────────────────────
 
+function PorkArt() {
+  return (
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="prk2-top" cx="40%" cy="32%" r="64%">
+          <stop offset="0%" stopColor="#FFCCA8" />
+          <stop offset="45%" stopColor="#E87050" />
+          <stop offset="100%" stopColor="#A02828" />
+        </radialGradient>
+        <linearGradient id="prk2-edge" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#A02828" />
+          <stop offset="100%" stopColor="#681010" />
+        </linearGradient>
+      </defs>
+      {/* Shadow */}
+      <ellipse cx="50" cy="90" rx="36" ry="6" fill="rgba(0,0,0,0.12)" />
+      {/* Side edge (3D thickness) */}
+      <path d="M 10 60 Q 12 72 30 80 Q 52 88 74 82 Q 90 76 90 66 L 90 56 Q 90 68 74 76 Q 52 82 28 74 Q 12 66 10 52 Z" fill="url(#prk2-edge)" />
+      {/* Top face */}
+      <path d="M 10 52 Q 8 32 26 20 Q 46 10 68 14 Q 88 20 90 40 Q 92 58 76 68 Q 58 78 30 74 Q 10 66 10 52 Z" fill="url(#prk2-top)" />
+      {/* Pork belly fat stripes — thick horizontal white bands */}
+      <path d="M 12 36 Q 44 28 80 36" fill="none" stroke="rgba(255,246,238,0.88)" strokeWidth="7" strokeLinecap="round" />
+      <path d="M 10 50 Q 44 42 80 50" fill="none" stroke="rgba(255,246,238,0.76)" strokeWidth="6" strokeLinecap="round" />
+      {/* Sear marks on top */}
+      <path d="M 22 24 Q 50 16 72 22" fill="none" stroke="rgba(80,18,0,0.42)" strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M 18 40 Q 48 30 76 38" fill="none" stroke="rgba(80,18,0,0.38)" strokeWidth="3.5" strokeLinecap="round" />
+      {/* Depth stroke */}
+      <path d="M 10 52 Q 8 32 26 20 Q 46 10 68 14 Q 88 20 90 40 Q 92 58 76 68 Q 58 78 30 74 Q 10 66 10 52 Z" fill="none" stroke="#6A1010" strokeWidth="1.5" />
+      {/* Highlight */}
+      <path d="M 22 24 Q 46 14 68 18" fill="none" stroke="rgba(255,255,255,0.48)" strokeWidth="4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function NoodlesArt() {
+  return (
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ndl2-body" cx="44%" cy="36%" r="60%">
+          <stop offset="0%" stopColor="#F8E898" />
+          <stop offset="55%" stopColor="#D4A820" />
+          <stop offset="100%" stopColor="#A87010" />
+        </radialGradient>
+      </defs>
+      {/* Shadow */}
+      <ellipse cx="50" cy="89" rx="34" ry="7" fill="rgba(0,0,0,0.12)" />
+      {/* Noodle mound body */}
+      <path d="M 14 76 Q 12 54 26 38 Q 38 24 50 22 Q 62 24 74 38 Q 88 54 86 76 Q 70 84 50 85 Q 30 84 14 76 Z" fill="url(#ndl2-body)" />
+      {/* Wavy noodle strands — lower section */}
+      <path d="M 18 72 Q 28 62 38 70 Q 48 78 58 68 Q 68 60 78 70" fill="none" stroke="#C8A010" strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M 16 64 Q 26 54 36 62 Q 46 70 56 60 Q 66 52 76 62" fill="none" stroke="#E0BC20" strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M 18 56 Q 28 46 38 54 Q 48 62 58 52 Q 68 44 78 54" fill="none" stroke="#C8A010" strokeWidth="3.5" strokeLinecap="round" />
+      {/* Upper curly mound strands */}
+      <path d="M 22 48 Q 32 38 42 46 Q 52 54 62 44 Q 72 36 80 46" fill="none" stroke="#F0D030" strokeWidth="4" strokeLinecap="round" />
+      <path d="M 26 40 Q 36 30 46 38 Q 56 46 66 36 Q 74 28 80 36" fill="none" stroke="#E0C020" strokeWidth="4" strokeLinecap="round" />
+      {/* Mound outline */}
+      <path d="M 14 76 Q 12 54 26 38 Q 38 24 50 22 Q 62 24 74 38 Q 88 54 86 76" fill="none" stroke="#8C6810" strokeWidth="1.5" strokeLinecap="round" />
+      {/* Highlight */}
+      <path d="M 30 30 Q 50 22 70 30" fill="none" stroke="rgba(255,255,255,0.52)" strokeWidth="4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function GreensArt() {
+  return (
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="gr2-front" cx="42%" cy="30%" r="68%">
+          <stop offset="0%" stopColor="#68E040" />
+          <stop offset="55%" stopColor="#229018" />
+          <stop offset="100%" stopColor="#115808" />
+        </radialGradient>
+        <radialGradient id="gr2-mid" cx="42%" cy="30%" r="68%">
+          <stop offset="0%" stopColor="#50C830" />
+          <stop offset="100%" stopColor="#186010" />
+        </radialGradient>
+      </defs>
+      {/* Shadow */}
+      <ellipse cx="50" cy="90" rx="30" ry="6" fill="rgba(0,0,0,0.10)" />
+      {/* Back leaves (darkest) */}
+      <path d="M 20 72 Q 14 52 22 34 Q 30 18 44 16 Q 50 24 46 44 Q 42 60 34 72 Z" fill="#1A7010" stroke="#104808" strokeWidth="1.2" />
+      <path d="M 80 72 Q 86 52 78 34 Q 70 18 56 16 Q 50 24 54 44 Q 58 60 66 72 Z" fill="#1A7010" stroke="#104808" strokeWidth="1.2" />
+      {/* Mid leaves */}
+      <path d="M 18 82 Q 10 58 18 38 Q 28 20 44 18 Q 38 36 34 58 Q 28 72 18 82 Z" fill="url(#gr2-mid)" stroke="#147010" strokeWidth="1.2" />
+      <path d="M 82 82 Q 90 58 82 38 Q 72 20 56 18 Q 62 36 66 58 Q 72 72 82 82 Z" fill="url(#gr2-mid)" stroke="#147010" strokeWidth="1.2" />
+      {/* Front centre leaf */}
+      <path d="M 50 86 Q 30 70 28 48 Q 28 26 50 18 Q 72 26 72 48 Q 70 70 50 86 Z" fill="url(#gr2-front)" stroke="#167010" strokeWidth="1.5" />
+      {/* Centre vein */}
+      <path d="M 50 86 L 50 18" fill="none" stroke="rgba(255,255,255,0.36)" strokeWidth="2" strokeLinecap="round" />
+      {/* Side veins */}
+      <path d="M 50 60 Q 38 52 32 46" fill="none" stroke="rgba(255,255,255,0.28)" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M 50 60 Q 62 52 68 46" fill="none" stroke="rgba(255,255,255,0.28)" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M 50 44 Q 38 36 34 30" fill="none" stroke="rgba(255,255,255,0.20)" strokeWidth="1" strokeLinecap="round" />
+      <path d="M 50 44 Q 62 36 66 30" fill="none" stroke="rgba(255,255,255,0.20)" strokeWidth="1" strokeLinecap="round" />
+      {/* Highlight */}
+      <path d="M 40 24 Q 50 18 60 24" fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth="4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function BokChoiArt() {
+  return (
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bk2-stalk" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#D0CCBC" />
+          <stop offset="40%" stopColor="#F8F6EE" />
+          <stop offset="100%" stopColor="#C4C0B0" />
+        </linearGradient>
+        <radialGradient id="bk2-leaf" cx="40%" cy="28%" r="64%">
+          <stop offset="0%" stopColor="#48C835" />
+          <stop offset="58%" stopColor="#1A9018" />
+          <stop offset="100%" stopColor="#0C5E0A" />
+        </radialGradient>
+      </defs>
+      {/* Shadow */}
+      <ellipse cx="50" cy="92" rx="28" ry="5" fill="rgba(0,0,0,0.10)" />
+      {/* White stalks */}
+      <path d="M 24 90 Q 22 70 28 52 Q 32 38 38 32 Q 42 52 42 80 L 42 90 Z" fill="url(#bk2-stalk)" stroke="#B0AC9C" strokeWidth="1.2" />
+      <path d="M 42 90 L 58 90 Q 58 78 58 56 Q 56 38 50 30 Q 44 38 42 56 Q 42 78 42 90 Z" fill="url(#bk2-stalk)" stroke="#B0AC9C" strokeWidth="1.2" />
+      <path d="M 58 90 L 76 90 Q 76 80 72 60 Q 68 38 62 32 Q 60 52 60 80 L 58 90 Z" fill="url(#bk2-stalk)" stroke="#B0AC9C" strokeWidth="1.2" />
+      {/* Stalk highlights */}
+      <path d="M 26 86 Q 26 68 30 50" fill="none" stroke="rgba(255,255,255,0.65)" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M 50 86 Q 50 66 50 48" fill="none" stroke="rgba(255,255,255,0.60)" strokeWidth="2.5" strokeLinecap="round" />
+      {/* Leaves */}
+      <path d="M 38 32 Q 26 20 18 22 Q 16 36 28 44 Q 36 48 40 36 Z" fill="url(#bk2-leaf)" stroke="#0C5C0A" strokeWidth="1.2" />
+      <path d="M 50 30 Q 44 16 34 14 Q 28 26 38 36 Q 46 42 50 30 Z" fill="url(#bk2-leaf)" stroke="#0C5C0A" strokeWidth="1.2" />
+      <path d="M 50 30 Q 56 16 66 14 Q 72 26 62 36 Q 54 42 50 30 Z" fill="url(#bk2-leaf)" stroke="#0C5C0A" strokeWidth="1.2" />
+      <path d="M 62 32 Q 74 20 82 22 Q 84 36 72 44 Q 64 48 60 36 Z" fill="url(#bk2-leaf)" stroke="#0C5C0A" strokeWidth="1.2" />
+      {/* Leaf veins */}
+      <path d="M 38 32 Q 26 28 20 24" fill="none" stroke="rgba(255,255,255,0.40)" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M 50 30 Q 40 22 36 16" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M 50 30 Q 60 22 64 16" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M 62 32 Q 74 28 80 24" fill="none" stroke="rgba(255,255,255,0.40)" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function SaladArt() {
+  // Shown as a fresh head of lettuce (raw ingredient, consistent with other icons)
+  return (
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="sld2-outer" cx="38%" cy="30%" r="66%">
+          <stop offset="0%" stopColor="#C8F070" />
+          <stop offset="55%" stopColor="#78C828" />
+          <stop offset="100%" stopColor="#488010" />
+        </radialGradient>
+        <radialGradient id="sld2-inner" cx="44%" cy="38%" r="56%">
+          <stop offset="0%" stopColor="#F8FFDC" />
+          <stop offset="100%" stopColor="#D4F088" />
+        </radialGradient>
+      </defs>
+      {/* Shadow */}
+      <ellipse cx="50" cy="90" rx="34" ry="6" fill="rgba(0,0,0,0.10)" />
+      {/* Outer leaves */}
+      <path d="M 12 70 Q 8 46 20 28 Q 32 12 50 10 Q 68 12 80 28 Q 92 46 88 70 Q 72 82 50 84 Q 28 82 12 70 Z" fill="url(#sld2-outer)" />
+      {/* Middle layer */}
+      <path d="M 18 72 Q 16 50 28 34 Q 40 20 50 18 Q 60 20 72 34 Q 84 50 82 72 Q 68 80 50 82 Q 32 80 18 72 Z" fill="#9ED838" />
+      {/* Inner pale core */}
+      <path d="M 26 74 Q 24 56 34 42 Q 42 30 50 28 Q 58 30 66 42 Q 76 56 74 74 Q 62 80 50 80 Q 38 80 26 74 Z" fill="url(#sld2-inner)" />
+      {/* Leaf wrinkle texture on outer */}
+      <path d="M 14 54 Q 20 50 26 56" fill="none" stroke="rgba(30,90,0,0.28)" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M 86 54 Q 80 50 74 56" fill="none" stroke="rgba(30,90,0,0.28)" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M 18 66 Q 24 60 30 66" fill="none" stroke="rgba(30,90,0,0.22)" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M 82 66 Q 76 60 70 66" fill="none" stroke="rgba(30,90,0,0.22)" strokeWidth="1.5" strokeLinecap="round" />
+      {/* Outer leaf ribs */}
+      <path d="M 50 10 Q 42 26 36 42" fill="none" stroke="rgba(20,80,0,0.18)" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M 50 10 Q 58 26 64 42" fill="none" stroke="rgba(20,80,0,0.18)" strokeWidth="1.2" strokeLinecap="round" />
+      {/* Depth outline */}
+      <path d="M 12 70 Q 8 46 20 28 Q 32 12 50 10 Q 68 12 80 28 Q 92 46 88 70 Q 72 82 50 84 Q 28 82 12 70 Z" fill="none" stroke="#306010" strokeWidth="1.5" />
+      {/* Highlight */}
+      <path d="M 30 18 Q 50 10 70 18" fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth="4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export const FOOD_ART: Record<string, React.FC> = {
   chicken: ChickenArt, beef: BeefArt, salmon: SalmonArt, tofu: TofuArt,
   pasta: PastaArt, rice: RiceArt, eggs: EggsArt, broccoli: BroccoliArt,
   tomato: TomatoArt, garlic: GarlicArt, onion: OnionArt, potato: PotatoArt,
   nuts: NutsArt, cheese: CheeseArt, crackers: CrackersArt, apple: AppleArt,
   banana: BananaArt, yogurt: YogurtArt, popcorn: PopcornArt, chocolate: ChocolateArt,
+  pork: PorkArt, noodles: NoodlesArt, greens: GreensArt, bokchoi: BokChoiArt, salad: SaladArt,
   coffee: CoffeeArt, tea: TeaArt, juice: JuiceArt, smoothie: SmoothieArt,
   soda: SodaArt, water: WaterArt, wine: WineArt, boba: BobaArt,
 };
