@@ -508,6 +508,46 @@ function buildUcookPayload(selected: Ingredient[]): Record<string, number> {
   return body;
 }
 
+// Backend ingredient key -> human label for the chips (e.g. "bak_choi" -> "Bok Choi")
+function prettyIngredient(key: string): string {
+  if (key === "bak_choi") return "Bok Choi";
+  return key.charAt(0).toUpperCase() + key.slice(1);
+}
+
+// Common food keywords (specific dish types first, then proteins/staples) used to
+// pick ONE reliable tag for a real food photo from the dish name.
+const FOOD_TAGS = [
+  "pizza", "sushi", "ramen", "burger", "burrito", "quesadilla", "nachos",
+  "enchilada", "taco", "biryani", "paella", "shawarma", "kebab", "gyro",
+  "falafel", "hummus", "lasagna", "risotto", "gnocchi", "carbonara", "pasta",
+  "spaghetti", "pho", "udon", "soba", "noodles", "noodle", "dumpling",
+  "sandwich", "tabbouleh", "shakshuka", "curry", "stew", "soup", "salad",
+  "fries", "pancake", "crepe", "waffle", "brownie", "churro", "tiramisu",
+  "smoothie", "latte", "cappuccino", "coffee", "tea", "juice", "soda", "wine",
+  "salmon", "tuna", "shrimp", "fish", "chicken", "beef", "pork", "lamb",
+  "duck", "tofu", "tempeh", "paneer", "egg", "rice", "potato", "broccoli",
+  "tomato", "cheese", "banana", "apple", "mango", "chocolate", "popcorn",
+  "peanut", "nuts", "yogurt", "coconut",
+];
+
+// Pick the single most photo-friendly food keyword from a dish name.
+function dishKeyword(name: string): string {
+  const lower = name.toLowerCase();
+  for (const t of FOOD_TAGS) if (lower.includes(t)) return t;
+  const first = lower.replace(/[^a-z\s]/g, " ").trim().split(/\s+/)[0];
+  return first || "food";
+}
+
+// Real dish photo: keep full URLs as-is; otherwise build a keyword-based
+// loremflickr image (lock=dish_id keeps it stable + distinct per dish).
+function dishImage(d: any, i: number): string {
+  const url = d.dish_image_url ?? "";
+  if (typeof url === "string" && url.startsWith("http")) return url;
+  const kw = dishKeyword(String(d.dish_name ?? ""));
+  const lock = d.dish_id ?? i;
+  return `https://loremflickr.com/600/320/${encodeURIComponent(kw)}?lock=${lock}`;
+}
+
 // Lenka's dish object -> our Recommendation (translate each field name)
 function adaptUcookDish(d: any, i: number): Recommendation {
   const pct = Number(d.discount_from_restaurant) || 0;
@@ -520,11 +560,11 @@ function adaptUcookDish(d: any, i: number): Recommendation {
     cost: Number(d.dish_price) || 0,
     rating: Number(d.restaurant_rating) || 0,
     discount: pct > 0 ? `${pct}% off` : "None",
-    // she doesn't return these two; default safely so the UI never breaks
-    ingredients: Array.isArray(d.ingredients) ? d.ingredients : [],
+    // she now returns ingredient keys; prettify them for the chips
+    ingredients: Array.isArray(d.ingredients) ? d.ingredients.map(prettyIngredient) : [],
     cuisine: d.cuisine ?? "",
     description: d.dish_description ?? "",
-    imageId: d.dish_image_url ?? "", // full URL; <img> handles both forms
+    imageId: dishImage(d, i), // full URL passthrough, else a real keyword photo
   };
 }
 
@@ -536,7 +576,9 @@ async function fetchUcookRecs(selected: Ingredient[]): Promise<Recommendation[]>
     body: JSON.stringify(buildUcookPayload(selected)),
   });
   if (!res.ok) throw new Error(`Ucook ${res.status}`);
-  const dishes = await res.json();
+  const json = await res.json();
+  // main2 wraps results as { recommendations: [...] }; older shape was a bare array
+  const dishes = Array.isArray(json) ? json : json?.recommendations;
   return (Array.isArray(dishes) ? dishes : []).map(adaptUcookDish);
 }
 
